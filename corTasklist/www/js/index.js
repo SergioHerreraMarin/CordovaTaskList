@@ -28,13 +28,22 @@ function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    document.getElementById('deviceready').classList.add('ready');
+    //document.getElementById('deviceready').classList.add('ready');
 }
 
 
 function addTask(){
     let userTask;
     userTask = prompt("New task");
-    $("ul").append("<li>" + userTask + "</li>");
+    //$("ul").append("<li>" + userTask + "</li>");
+    $("ul").append("<li><a href='#pageEdita' class='editlink'>" + userTask + " <button type='button' class='buttonDeleteTask'>DELETE</button></a></li>");
     $("ul").listview("refresh");
+    $('.buttonDeleteTask').click(elimina); //Se pone aquí ya que necesitas tener el boton ya creado para una vez ejecutada este línea pueda encontrarlo. 
 }   
+
+function elimina(e){
+    console.log("DELETE");
+    var caller = e.target || e.srcElement;
+    $(caller).parent().parent().remove();
+    return false;
+}
