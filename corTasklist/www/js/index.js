@@ -27,9 +27,7 @@ $('#buttonChangeName').click(changeNameTask);
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
-
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    //document.getElementById('deviceready').classList.add('ready');
 }
 
 var callerGlobal;
@@ -52,11 +50,16 @@ function elimina(e){
 }
 
 function changeNameTask(){
-    let newTaskName = $('#inputNewName').val();   
-    $(callerGlobal).html(newTaskName);
+    let newTaskName = $('#inputNewName').val();
+    $('#inputNewName').val("");
+    $(callerGlobal).html(newTaskName + "<button type='button' class='buttonDeleteTask'>DELETE</button>");
+    $('.buttonDeleteTask').click(elimina); 
     document.location = '#homePage';
 }
 
 function saveEvent(e){
     callerGlobal = e.target || e.srcElement;
+    //let taskLabel = $(callerGlobal).parent().text();
+    //taskLabel = taskLabel.replace("DELETE", "");
+    //$('#inputNewName').attr("value", taskLabel);
 }   
