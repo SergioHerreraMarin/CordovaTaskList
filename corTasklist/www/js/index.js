@@ -22,6 +22,7 @@
 document.addEventListener('deviceready', onDeviceReady, false);
 
 $('#buttonAppend').click(addTask);
+$('#buttonChangeName').click(changeNameTask);
 
 
 function onDeviceReady() {
@@ -31,14 +32,16 @@ function onDeviceReady() {
     //document.getElementById('deviceready').classList.add('ready');
 }
 
+var callerGlobal;
+
 
 function addTask(){
     let userTask;
     userTask = prompt("New task");
-    //$("ul").append("<li>" + userTask + "</li>");
-    $("ul").append("<li><a href='#pageEdita' class='editlink'>" + userTask + " <button type='button' class='buttonDeleteTask'>DELETE</button></a></li>");
+    $("ul").append("<li><a href='#pageEdita'>" + userTask + " <button type='button' class='buttonDeleteTask'>DELETE</button></a></li>");
+    $("ul a").click(saveEvent);
     $("ul").listview("refresh");
-    $('.buttonDeleteTask').click(elimina); //Se pone aquí ya que necesitas tener el boton ya creado para una vez ejecutada este línea pueda encontrarlo. 
+    $('.buttonDeleteTask').click(elimina); 
 }   
 
 function elimina(e){
@@ -47,3 +50,13 @@ function elimina(e){
     $(caller).parent().parent().remove();
     return false;
 }
+
+function changeNameTask(){
+    let newTaskName = $('#inputNewName').val();   
+    $(callerGlobal).html(newTaskName);
+    document.location = '#homePage';
+}
+
+function saveEvent(e){
+    callerGlobal = e.target || e.srcElement;
+}   
