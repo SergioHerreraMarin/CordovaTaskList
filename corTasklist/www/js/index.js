@@ -30,22 +30,35 @@ function onDeviceReady() {
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
 }
 
-var callerGlobal;
 
+
+var callerGlobal;
+var dataArray;
+
+loadData();
 
 function addTask(){
-    let userTask;
-    userTask = prompt("New task");
-    $("ul").append("<li><a href='#pageEdita'>" + userTask + " <button type='button' class='buttonDeleteTask'>DELETE</button></a></li>");
+    let userTaskName;
+    let userTaskElement;
+    
+    userTaskName = prompt("New task");
+    userTaskElement = "<li><a href='#pageEdita'>" + userTaskName + " <button type='button' class='buttonDeleteTask'>DELETE</button></a></li>";
+    $("ul").append(userTaskElement);
     $("ul a").click(saveEvent);
     $("ul").listview("refresh");
     $('.buttonDeleteTask').click(elimina); 
+
+    //Add task to dataArray
+    dataArray.push(userTaskElement);
+    //Save to localStorage
+    saveData(dataArray);
 }   
 
 function elimina(e){
     console.log("DELETE");
     var caller = e.target || e.srcElement;
     $(caller).parent().parent().remove();
+
     return false;
 }
 
@@ -57,9 +70,37 @@ function changeNameTask(){
     document.location = '#homePage';
 }
 
+
 function saveEvent(e){
     callerGlobal = e.target || e.srcElement;
-    //let taskLabel = $(callerGlobal).parent().text();
-    //taskLabel = taskLabel.replace("DELETE", "");
-    //$('#inputNewName').attr("value", taskLabel);
 }   
+
+
+
+function saveData(data){
+    localStorage.setItem("dataArray", JSON.stringify(data));
+}
+
+function clearStorage(){
+    localStorage.clear();
+}
+
+
+function loadData(){
+
+    dataArray = JSON.parse(localStorage.getItem("dataArray"));
+
+    if(dataArray != null){
+        for(let i = 0; i < dataArray.length; i++){
+            console.log(dataArray[i]);
+            $("ul").append(dataArray[i]);
+            $("ul a").click(saveEvent);
+            $('.buttonDeleteTask').click(elimina);
+        }
+    }else{
+        dataArray = [];
+    }
+}
+
+
+
